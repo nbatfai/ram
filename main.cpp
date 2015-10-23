@@ -237,13 +237,14 @@ int main ( int argc, char **argv )
   };
 
   int j {0};
-  int N_e {25};
+  int N_e {30};
   std::string training_file = samu.get_training_file();
 
   samu.set_training_file ( "bbe" );
 
   double prev_mbrel {0};
   int mbrelc {0};
+  int mbrelc2 {0};
 
 #ifdef SUPER_OR_REMOTE_COMP
   //for ( int ii {0}; samu.run() && ii < 1000 + 4000 + 5000 + 4000 + 1000; ++ii )
@@ -395,26 +396,40 @@ int main ( int argc, char **argv )
                     << " ms "
                     << std::endl;
 
-          if ( abs ( prev_mbrel - mbrel ) < .4 )
+          //if ( abs ( prev_mbrel - mbrel ) < 1.2 )
+          if ( mbrel  < 0.0 )
             ++mbrelc;
           else
             mbrelc = 0;
 
+          if ( fabs ( prev_mbrel - mbrel ) < .05 )
+            ++mbrelc2;
+          else
+            mbrelc2 = 0;
+
           //if ( /*mbrel > 35.0 &&*/ mbrelc > 50 && cnt-bad <= cnt- ( cnt/10 ) )
-          if ( /*mbrel > 35.0 &&*/ mbrelc > 10 && bad >= 2 )
+          if ( /*mbrel > 35.0 &&*/ mbrelc > 15 && bad >= 3 )
             {
-              samu.scale_N_e();
-              //N_e += 3;
+              // samu.scale_N_e();
+              //N_e += 2;
               mbrelc = 0;
               std::cerr << " iter, N structure rescaled " << std::endl;
 
               //} else if(!bad)
               //} else if(bad <cnt/10)
             }
-          else if ( bad < 2 )
+          else if ( mbrelc2 >= samuHasAlreadyLearned )
+            {
+              samu.scale_N_e();
+              N_e += 2;
+              mbrelc2 = 0;
+              std::cerr << "(mbrelc2) iter, N structure rescaled " << std::endl;
+
+            }
+          else if ( bad < 3 )
             {
 
-              if ( ++reinforcement == 20 )
+              if ( ++reinforcement == 30 )
                 {
                   samuHasAlreadyLearned += 7;
                   reinforcement = 0;
