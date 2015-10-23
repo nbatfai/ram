@@ -906,8 +906,8 @@ private:
   std::string prev_state;
 
   double prev_reward { -std::numeric_limits<double>::max() };
-  double max_reward { 1.1 };
-  double min_reward {-1.1*max_reward};
+  double max_reward { 1.0 };
+  double min_reward {-1.0*max_reward};
 
 #ifndef CHARACTER_CONSOLE
   double prev_image [256*256];

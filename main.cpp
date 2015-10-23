@@ -410,7 +410,7 @@ int main ( int argc, char **argv )
               mbrelc2 = 0;
           */
 
-          if ( fabs ( prev_mbrel - mbrel ) < .4 )
+          if (  mbrel  < 0.0 )
             ++mbrelc;
           else
             mbrelc = 0;
@@ -423,29 +423,30 @@ int main ( int argc, char **argv )
           if ( bad <= 3 )
             {
 
-              if ( ++reinforcement == 20 )
+              if ( ++reinforcement == 1 )
                 {
                   samuHasAlreadyLearned += 7;
                   reinforcement = 0;
                 }
             }
-          else if ( mbrelc2 >= 2*samuHasAlreadyLearned )
+          if ( mbrelc2 >= samuHasAlreadyLearned )
             {
 
-              if ( N_e < samuHasAlreadyLearned )
-                N_e +=1;
-              samu.scale_N_e ( .75 );
+              if ( N_e < 2.3*samuHasAlreadyLearned )
+                N_e +=2;
+              samu.scale_N_e ( .65 );
               mbrelc2 = 0;
               std::cerr << "(mbrelc2) iter, N structure rescaled " << std::endl;
 
             }
-          else if ( /*mbrel > 35.0 &&*/ mbrelc > 2*samuHasAlreadyLearned && bad > 3 )
+          if ( /*mbrel > 35.0 &&*/ mbrelc > 3*samuHasAlreadyLearned && bad > 3 )
             {
+	      /*
 
               if ( N_e >samuHasAlreadyLearned )
-                N_e -=1;
-
-              samu.scale_N_e ( .82 );
+                N_e -=2;
+*/
+              samu.scale_N_e ( .65 );
               //N_e += 5;
               mbrelc = 0;
               std::cerr << " iter, N structure rescaled " << std::endl;
