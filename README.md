@@ -1,5 +1,6 @@
 # ram
-"The son of Hezron is Ram." Ram allows to experiment with different deep Q learning algorithms to express feelings when he is talking.
+"The son of Hezron is Ram." Ram allows to experiment with different deep Q learning algorithms to express feelings when he is talking. 
+See also the page [Family Robotics - Deep Q-learning with Samu](http://shrek.unideb.hu/~nbatfai/)
 
 ## Genealogy of Ram
 
