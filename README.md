@@ -86,9 +86,10 @@ At this moment Samu is the generic name of rapid prototypes that facilitate achi
 ## Highlights of Samu
 
 Samu
-1. directly implements the definition of machine consciousness introduced in the paper 
-entitled [Conscious Machines and Consciousness Oriented Programming](http://arxiv.org/abs/1108.2865).
-2. corresponds the principles of Developmental Robotics 
+
+1. directly implements the definition of machine consciousness (such as the definitions of conscious and intuitive computer programs) 
+introduced in the paper entitled [Conscious Machines and Consciousness Oriented Programming](http://arxiv.org/abs/1108.2865).
+2. corresponds the principles of Developmental Robotics, [Some Basic Principles of Developmental Robotics](http://ieeexplore.ieee.org/xpl/login.jsp?tp=&arnumber=5200465&url=http%3A%2F%2Fieeexplore.ieee.org%2Fiel5%2F4563672%2F5290358%2F05200465).
 3. applies Q learning with neural networks approximators
 4. uses multilayer perceptrons for approximation of the Q function, 
 it is a deep Q learning feature, [Human-level control through deep reinforcement learning](http://www.nature.com/nature/journal/v518/n7540/full/nature14236.html)
