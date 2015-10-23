@@ -267,9 +267,14 @@ public:
 
   void scale_N_e ( void )
   {
-    vi.scalen();
+    vi.scalen(.65);
   }
 
+  void scale_N_e ( double s )
+  {
+    vi.scalen(s);
+  }
+  
   int get_brel ( void )
   {
     return vi.brel();
@@ -545,9 +550,9 @@ private:
       ql.clearn();
     }
 
-    void scalen ( void )
+    void scalen ( double s )
     {
-      ql.scalen();
+      ql.scalen(s);
     }
 
     int brel ( void )
