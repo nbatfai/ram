@@ -440,8 +440,13 @@ private:
         }
 
 #ifdef DISP_CURSES
-//      samu.disp.vi ( con.str() );
+
+#ifndef COLOR_FEELINGS
+      samu.disp.vi ( con.str() );
+#else      
       samu.disp.vi ( &console[0][0] );
+#endif
+
 #endif
 
 #endif

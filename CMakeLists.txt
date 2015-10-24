@@ -64,6 +64,9 @@ project(SAMU)
 
  set(DISP_CURSES ON)
  #set(DISP_CURSES OFF)
+
+# Ram
+add_definitions(-DCOLOR_FEELINGS)
  
 # Hezron 
 # add_definitions(-DPYRAMID_VI)
