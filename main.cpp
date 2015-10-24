@@ -410,7 +410,7 @@ int main ( int argc, char **argv )
               mbrelc2 = 0;
           */
 
-          if (  mbrel  < 0.0 )
+          if ( mbrel  < 0.0 )
             ++mbrelc;
           else
             mbrelc = 0;
@@ -441,11 +441,14 @@ int main ( int argc, char **argv )
             }
           if ( /*mbrel > 35.0 &&*/ mbrelc > 3*samuHasAlreadyLearned && bad > 3 )
             {
-	      /*
+              /*
 
-              if ( N_e >samuHasAlreadyLearned )
-                N_e -=2;
-*/
+                    if ( N_e >samuHasAlreadyLearned )
+                      N_e -=2;
+              */
+
+              if ( N_e < samuHasAlreadyLearned )
+                N_e +=1;
               samu.scale_N_e ( .65 );
               //N_e += 5;
               mbrelc = 0;
