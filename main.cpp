@@ -446,10 +446,10 @@ int main ( int argc, char **argv )
                     if ( N_e >samuHasAlreadyLearned )
                       N_e -=2;
               */
-
-              if ( N_e < samuHasAlreadyLearned )
+	      
+	                    if ( N_e < samuHasAlreadyLearned )
                 N_e +=1;
-              samu.scale_N_e ( .65 );
+              samu.scale_N_e ( .85 );
               //N_e += 5;
               mbrelc = 0;
               std::cerr << " iter, N structure rescaled " << std::endl;
@@ -511,3 +511,4 @@ int main ( int argc, char **argv )
 
   return 0;
 }
+
