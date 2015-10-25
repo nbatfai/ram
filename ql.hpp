@@ -94,7 +94,8 @@ public:
     std::default_random_engine gen;
 #endif
 
-    std::uniform_real_distribution<double> dist ( -1.0, 1.0 );
+//    std::uniform_real_distribution<double> dist ( -1.0, 1.0 );
+    std::uniform_real_distribution<double> dist ( -5.0, 5.0 );
 
     for ( int i {1}; i < n_layers; ++i )
       {
