@@ -94,8 +94,8 @@ public:
     std::default_random_engine gen;
 #endif
 
-//    std::uniform_real_distribution<double> dist ( -1.0, 1.0 );
-    std::uniform_real_distribution<double> dist ( -5.0, 5.0 );
+    std::uniform_real_distribution<double> dist ( -1.0, 1.0 );
+//    std::uniform_real_distribution<double> dist ( -5.0, 5.0 );
 
     for ( int i {1}; i < n_layers; ++i )
       {
@@ -108,6 +108,7 @@ public:
             for ( int k {0}; k < n_units[i-1]; ++k )
               {
                 weights[i-1][j][k] = dist ( gen );
+                //weights[i-1][j][k] = 1.0;
               }
           }
       }
@@ -908,8 +909,8 @@ private:
   std::string prev_state;
 
   double prev_reward { -std::numeric_limits<double>::max() };
-  double max_reward { 5.0 };
-  double min_reward {-1.0*max_reward};
+  double max_reward { 1.0 };
+  double min_reward {-2.0*max_reward};
 
 #ifndef CHARACTER_CONSOLE
   double prev_image [256*256];
