@@ -424,8 +424,8 @@ private:
 #endif
           for ( int j {0}; j<80; ++j )
             {
-              img_input[i*80+j] = ( ( double ) console[i][j] ) / 255.0;
-
+              //img_input[i*80+j] = ( ( double ) console[i][j] ) / 255.0 - .5;
+	      img_input[i*80+j] = ( ( double ) console[i][j] ) / 255.0;
 #ifdef DISP_CURSES
               //if ( isgraph ( console[i][j] ) )
               if ( isprint ( console[i][j] ) )
