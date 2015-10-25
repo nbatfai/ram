@@ -438,6 +438,7 @@ private:
 
 #endif
         }
+        img_input[9*80+79] = -1.0;
 
 #ifdef DISP_CURSES
 
