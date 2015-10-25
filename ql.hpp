@@ -170,6 +170,7 @@ public:
         for ( int j = 0; j < n_units[i]; ++j )
           {
             units[i][j] = 0.0;
+	    //units[i][j] = -0.5;
 
             for ( int k = 0; k < n_units[i-1]; ++k )
               {
