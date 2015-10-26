@@ -167,12 +167,28 @@ public:
         cuda_layer ( i, n_units, units, weights );
 
 #else
+        
+                #pragma omp parallel for
+                for ( int j = 0; j < n_units[i]; ++j )
+                  {
+                    units[i][j] = 0.0;
+        	    //units[i][j] = -0.5;
 
+                    for ( int k = 0; k < n_units[i-1]; ++k )
+                      {
+                        units[i][j] += weights[i-1][j][k] * units[i-1][k];
+                      }
+
+                    units[i][j] = sigmoid ( units[i][j] );
+
+                  }
+        
+/*	
         #pragma omp parallel for
-        for ( int j = 0; j < n_units[i]; ++j )
+        for ( int j = 0; j < n_units[i]-1; ++j )
           {
             units[i][j] = 0.0;
-	    //units[i][j] = -0.5;
+            //units[i][j] = -0.5;
 
             for ( int k = 0; k < n_units[i-1]; ++k )
               {
@@ -183,6 +199,19 @@ public:
 
           }
 
+        if ( i != n_layers -1 )
+          {
+            units[i][n_units[i]-1] = 0.0;
+            //units[i][j] = -0.5;
+
+            for ( int k = 0; k < n_units[i-1]; ++k )
+              {
+                units[i][n_units[i]-1] -1.0;
+              }
+
+            units[i][n_units[i]-1] = sigmoid ( units[i][n_units[i]-1] );
+          }
+*/          
 #endif
 
       }
@@ -335,8 +364,8 @@ public:
         std::stringstream ss;
         for ( int j {0}; j<40; ++j )
           {
-	    //char c = dist ( gen );
-	    //ss << c;
+            //char c = dist ( gen );
+            //ss << c;
             ss << dist ( gen );
           }
         prcps_f[ss.str()] = new Perceptron ( 3, 10*80, 16,  1 ); //exp.a1 // 302
@@ -515,6 +544,7 @@ public:
         //prcps[triplet] = new Perceptron ( 3, 256*256, 400, 1 );
 #else
         prcps[triplet] = new Perceptron ( 3, 10*80, 32,  1 ); //exp.a1 // 302
+        prcps[triplet] = new Perceptron ( 3, 10*80, 33,  1 ); 
 
         //prcps[triplet] = new Perceptron ( 3, 10*80, 64,  1 ); //exp.a4
         //prcps[triplet] = new Perceptron ( 4, 10*80, 256, 32,  1 );
@@ -704,7 +734,7 @@ public:
   {
     return 1.0/ ( 1.0 + exp ( -n ) );
   }
-  
+
   void scalen ( double s )
   {
 
@@ -714,12 +744,12 @@ public:
         for ( std::map<std::string, int>::iterator itt=it->second.begin(); itt!=it->second.end(); ++itt )
           {
             //itt->second -= ( itt->second / 5 );
-	    itt->second *= s;
+            itt->second *= s;
           }
       }
 
   }
-  
+
   void save_prcps ( std::fstream & samuFile )
   {
     samuFile << prcps.size();
