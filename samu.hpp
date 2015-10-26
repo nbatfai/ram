@@ -317,11 +317,13 @@ private:
           program.push ( triplet );
         }
 
+#ifdef FEELINGS        
       if ( feelings.size() >= stmt_max )
         feelings.pop();
 
       feelings.push ( ql.feeling() );
-
+#endif
+      
       boost::posix_time::ptime now = boost::posix_time::second_clock::universal_time();
 
 #ifndef CHARACTER_CONSOLE
@@ -338,8 +340,10 @@ private:
       char *stmt_buffer_p = stmt_buffer;
 
       std::queue<SPOTriplet> run = program;
+#ifdef FEELINGS
       std::queue<Feeling> feels = feelings;
-
+#endif
+      
 #ifndef Q_LOOKUP_TABLE
 
       std::string prg;
@@ -370,7 +374,10 @@ private:
           while ( cnt < 80 )
             cnt += std::snprintf ( stmt_buffer+cnt, 1024-cnt, "%s.%s(%s);", triplet.s.c_str(), triplet.p.c_str(), triplet.o.c_str() );
 #else
-          //std::snprintf ( stmt_buffer, 1024, "%s.%s(%s);", triplet.s.c_str(), triplet.p.c_str(), triplet.o.c_str() );
+	  
+#ifndef FEELINGS	  
+          std::snprintf ( stmt_buffer, 1024, "%s.%s(%s);", triplet.s.c_str(), triplet.p.c_str(), triplet.o.c_str() );
+#else	  
           if ( !feels.empty() )
             {
               auto s = feels.front();
@@ -379,6 +386,7 @@ private:
               std::string spo = ss.str();
               std::snprintf ( stmt_buffer, 1024, "%-30s %s", spo.c_str(), s.c_str() );
             }
+#endif            
 #endif
 
 
@@ -399,7 +407,9 @@ private:
 #endif
 
           run.pop();
+#ifdef FEELINGS	  
           feels.pop();
+#endif	  
         }
 
 #ifndef CHARACTER_CONSOLE
@@ -425,7 +435,6 @@ private:
           for ( int j {0}; j<80; ++j )
             {
               img_input[i*80+j] = ( ( double ) console[i][j] ) / 255.0;
-
 #ifdef DISP_CURSES
               //if ( isgraph ( console[i][j] ) )
               if ( isprint ( console[i][j] ) )
@@ -580,7 +589,9 @@ private:
     Samu &samu;
     QL ql;
     std::queue<SPOTriplet> program;
+#ifdef FEELINGS
     std::queue<Feeling> feelings;
+#endif    
     int stmt_counter {0};
     static const int stmt_max = 10;
 

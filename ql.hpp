@@ -313,14 +313,16 @@ private:
 };
 #endif
 
+#ifdef FEELINGS
 typedef std::string Feeling;
+#endif
 
 class QL
 {
 public:
   QL ( )
   {
-
+#ifdef FEELINGS
     std::random_device init;
     std::default_random_engine gen {init() };
     //std::uniform_int_distribution<int> dist ( 0, 1 );
@@ -338,6 +340,7 @@ public:
           }
         prcps_f[ss.str()] = new Perceptron ( 3, 10*80, 16,  1 ); //exp.a1 // 302
       }
+#endif      
   }
 
   QL ( SPOTriplet triplet )
@@ -388,7 +391,7 @@ public:
 
     return min_q_spap;
   }
-
+#ifdef FEELINGS
   double max_ap_Q_sp_ap_f ( double image[] )
   {
     double q_spap;
@@ -404,6 +407,7 @@ public:
 
     return min_q_spap;
   }
+#endif
 
   SPOTriplet argmax_ap_f ( std::string prg, double image[] )
   {
@@ -447,7 +451,7 @@ public:
     return ap;
   }
 
-
+#ifdef FEELINGS
   Feeling argmax_ap_f_f ( std::string prg, double image[] )
   {
     double min_f = -std::numeric_limits<double>::max();
@@ -489,6 +493,7 @@ public:
 
     return ap;
   }
+#endif  
 
   SPOTriplet operator() ( SPOTriplet triplet, std::string prg, double image[] )
   {
@@ -502,8 +507,10 @@ public:
       //( triplet == prev_action ) ?1.0:-2.0;
       ( triplet == prev_action ) ?max_reward:min_reward;
 
+#ifdef FEELINGS
     Feeling feeling = prcps_f.begin()->first;
-
+#endif
+    
     if ( prcps.find ( triplet ) == prcps.end() )
       {
 
@@ -526,30 +533,36 @@ public:
     if ( prev_reward >  -std::numeric_limits<double>::max() )
       {
         ++frqs[prev_action][prev_state];
+#ifdef FEELINGS	
         ++frqs_f[prev_feeling][prev_state];
-
+#endif
         double max_ap_q_sp_ap = max_ap_Q_sp_ap ( image );
+#ifdef FEELINGS	
         double max_ap_q_sp_ap_f = max_ap_Q_sp_ap_f ( image );
-
+#endif
         double old_q_q_s_a_nn_q_s_a;
 
         for ( int z {0}; z<10; ++z )
           {
             double nn_q_s_a = ( *prcps[prev_action] ) ( prev_image );
-
+#ifdef FEELINGS
             double nn_q_s_a_f = ( *prcps_f[prev_feeling] ) ( prev_image );
-
+#endif
             double q_q_s_a = nn_q_s_a +
                              alpha ( frqs[prev_action][prev_state] ) *
                              ( reward + gamma * max_ap_q_sp_ap - nn_q_s_a );
 
-            double q_q_s_a_f = nn_q_s_a_f +
+#ifdef FEELINGS
+	    double q_q_s_a_f = nn_q_s_a_f +
                                alpha ( frqs_f[prev_feeling][prev_state] ) *
                                ( reward + gamma * max_ap_q_sp_ap_f - nn_q_s_a_f );
-
+#endif
             prcps[prev_action]->learning ( prev_image, q_q_s_a, nn_q_s_a );
+	    
+#ifdef FEELINGS	    
             prcps_f[prev_feeling]->learning ( prev_image, q_q_s_a_f, nn_q_s_a_f );
-
+#endif
+	    
             std::cerr << "### "
                       << q_q_s_a - nn_q_s_a
                       << " "
@@ -557,7 +570,7 @@ public:
                       << " "
                       << nn_q_s_a
                       << std::endl;
-
+#ifdef FEELINGS
             std::cerr << "###Feelings "
                       << q_q_s_a_f - nn_q_s_a_f
                       << " "
@@ -565,7 +578,7 @@ public:
                       << " "
                       << nn_q_s_a_f
                       << std::endl;
-
+#endif
             if ( std::fabs ( old_q_q_s_a_nn_q_s_a - ( q_q_s_a - nn_q_s_a ) ) <= 0.0000000001 )
               break;
 
@@ -574,14 +587,17 @@ public:
           }
 
         action = argmax_ap_f ( prg, image );
+#ifdef FEELINGS	
         feeling = argmax_ap_f_f ( prg, image );
+#endif	
       }
 
     prev_state = prg; 		// s <- s'
     prev_reward = reward;	// r <- r'
     prev_action = action;	// a <- a'
+#ifdef FEELINGS    
     prev_feeling = feeling;	// a <- a'
-
+#endif
 #ifndef CHARACTER_CONSOLE
     std::memcpy ( prev_image, image, 256*256*sizeof ( double ) );
 #else
@@ -672,12 +688,12 @@ public:
   {
     return prev_reward;
   }
-
+#ifdef FEELINGS
   Feeling feeling ( void )
   {
     return prev_feeling;
   }
-
+#endif
   double alpha ( int n )
   {
     return 1.0/ ( ( ( double ) n ) + 1.0 );
@@ -890,19 +906,25 @@ private:
   std::map<SPOTriplet, std::map<std::string, double>> table_;
 #else
   std::map<SPOTriplet, Perceptron*> prcps;
+#ifdef FEELINGS
   std::map<Feeling, Perceptron*> prcps_f;
+#endif  
 #ifdef QNN_DEBUG
   double relevance {0.0};
+#ifdef FEELINGS  
   double relevance_f {0.0};
+#endif  
 #endif
 #endif
 
   std::map<SPOTriplet, std::map<std::string, int>> frqs;
+#ifdef FEELINGS  
   std::map<Feeling, std::map<std::string, int>> frqs_f;
-
+#endif
   SPOTriplet prev_action;
+#ifdef FEELINGS
   Feeling prev_feeling {"Hello, World!"};
-
+#endif
   std::string prev_state;
 
   double prev_reward { -std::numeric_limits<double>::max() };
