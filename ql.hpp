@@ -537,9 +537,11 @@ public:
         ++frqs_f[prev_feeling][prev_state];
 #endif
 
-//        double max_ap_q_sp_ap = max_ap_Q_sp_ap ( image );
-
+#ifndef SARSA
+        double max_ap_q_sp_ap = max_ap_Q_sp_ap ( image );
+#else
         double max_ap_q_sp_ap = ( *prcps[action] ) ( image );
+#endif
 
 #ifdef FEELINGS
         double max_ap_q_sp_ap_f = max_ap_Q_sp_ap_f ( image );
@@ -552,16 +554,10 @@ public:
 #ifdef FEELINGS
             double nn_q_s_a_f = ( *prcps_f[prev_feeling] ) ( prev_image );
 #endif
-            /*
-                  double q_q_s_a = nn_q_s_a +
-                                   alpha ( frqs[prev_action][prev_state] ) *
-                                   ( reward + gamma * max_ap_q_sp_ap - nn_q_s_a );
-            */
 
             double q_q_s_a = nn_q_s_a +
                              alpha ( frqs[prev_action][prev_state] ) *
                              ( reward + gamma * max_ap_q_sp_ap - nn_q_s_a );
-
 
 #ifdef FEELINGS
             double q_q_s_a_f = nn_q_s_a_f +

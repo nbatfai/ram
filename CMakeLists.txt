@@ -68,7 +68,8 @@ project(SAMU)
 # Ram
 #add_definitions(-DFEELINGS)
 #add_definitions(-DPRINTING_CHARBYCHAR)
- 
+add_definitions(-DSARSA)
+
 # Hezron 
 # add_definitions(-DPYRAMID_VI)
 # add_definitions(-DJUSTIFY_VI)
