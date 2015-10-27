@@ -66,8 +66,8 @@ project(SAMU)
  #set(DISP_CURSES OFF)
 
 # Ram
-add_definitions(-DFEELINGS)
-add_definitions(-DPRINTING_CHARBYCHAR)
+#add_definitions(-DFEELINGS)
+#add_definitions(-DPRINTING_CHARBYCHAR)
  
 # Hezron 
 # add_definitions(-DPYRAMID_VI)
