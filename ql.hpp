@@ -334,13 +334,13 @@ public:
         std::stringstream ss;
         for ( int j {0}; j<40; ++j )
           {
-	    //char c = dist ( gen );
-	    //ss << c;
+            //char c = dist ( gen );
+            //ss << c;
             ss << dist ( gen );
           }
         prcps_f[ss.str()] = new Perceptron ( 3, 10*80, 16,  1 ); //exp.a1 // 302
       }
-#endif      
+#endif
   }
 
   QL ( SPOTriplet triplet )
@@ -493,7 +493,7 @@ public:
 
     return ap;
   }
-#endif  
+#endif
 
   SPOTriplet operator() ( SPOTriplet triplet, std::string prg, double image[] )
   {
@@ -510,7 +510,7 @@ public:
 #ifdef FEELINGS
     Feeling feeling = prcps_f.begin()->first;
 #endif
-    
+
     if ( prcps.find ( triplet ) == prcps.end() )
       {
 
@@ -533,15 +533,15 @@ public:
     if ( prev_reward >  -std::numeric_limits<double>::max() )
       {
         ++frqs[prev_action][prev_state];
-#ifdef FEELINGS	
+#ifdef FEELINGS
         ++frqs_f[prev_feeling][prev_state];
 #endif
 
 //        double max_ap_q_sp_ap = max_ap_Q_sp_ap ( image );
 
-	double max_ap_q_sp_ap = ( *prcps[action] ) ( image );
-	
-#ifdef FEELINGS	
+        double max_ap_q_sp_ap = ( *prcps[action] ) ( image );
+
+#ifdef FEELINGS
         double max_ap_q_sp_ap_f = max_ap_Q_sp_ap_f ( image );
 #endif
         double old_q_q_s_a_nn_q_s_a;
@@ -552,28 +552,28 @@ public:
 #ifdef FEELINGS
             double nn_q_s_a_f = ( *prcps_f[prev_feeling] ) ( prev_image );
 #endif
-	    /*
+            /*
+                  double q_q_s_a = nn_q_s_a +
+                                   alpha ( frqs[prev_action][prev_state] ) *
+                                   ( reward + gamma * max_ap_q_sp_ap - nn_q_s_a );
+            */
+
             double q_q_s_a = nn_q_s_a +
                              alpha ( frqs[prev_action][prev_state] ) *
                              ( reward + gamma * max_ap_q_sp_ap - nn_q_s_a );
-	    */
-	    
-            double q_q_s_a = nn_q_s_a +
-                             alpha ( frqs[prev_action][prev_state] ) *
-                             ( reward + gamma * max_ap_q_sp_ap - nn_q_s_a );
-	    
-	    
+
+
 #ifdef FEELINGS
-	    double q_q_s_a_f = nn_q_s_a_f +
+            double q_q_s_a_f = nn_q_s_a_f +
                                alpha ( frqs_f[prev_feeling][prev_state] ) *
                                ( reward + gamma * max_ap_q_sp_ap_f - nn_q_s_a_f );
 #endif
             prcps[prev_action]->learning ( prev_image, q_q_s_a, nn_q_s_a );
-	    
-#ifdef FEELINGS	    
+
+#ifdef FEELINGS
             prcps_f[prev_feeling]->learning ( prev_image, q_q_s_a_f, nn_q_s_a_f );
 #endif
-	    
+
             std::cerr << "### "
                       << q_q_s_a - nn_q_s_a
                       << " "
@@ -598,15 +598,15 @@ public:
           }
 
         action = argmax_ap_f ( prg, image );
-#ifdef FEELINGS	
+#ifdef FEELINGS
         feeling = argmax_ap_f_f ( prg, image );
-#endif	
+#endif
       }
 
     prev_state = prg; 		// s <- s'
     prev_reward = reward;	// r <- r'
     prev_action = action;	// a <- a'
-#ifdef FEELINGS    
+#ifdef FEELINGS
     prev_feeling = feeling;	// a <- a'
 #endif
 #ifndef CHARACTER_CONSOLE
@@ -728,7 +728,7 @@ public:
   {
     return 1.0/ ( 1.0 + exp ( -n ) );
   }
-  
+
   void scalen ( double s )
   {
 
@@ -738,12 +738,12 @@ public:
         for ( std::map<std::string, int>::iterator itt=it->second.begin(); itt!=it->second.end(); ++itt )
           {
             //itt->second -= ( itt->second / 5 );
-	    itt->second *= s;
+            itt->second *= s;
           }
       }
 
   }
-  
+
   void save_prcps ( std::fstream & samuFile )
   {
     samuFile << prcps.size();
@@ -919,17 +919,17 @@ private:
   std::map<SPOTriplet, Perceptron*> prcps;
 #ifdef FEELINGS
   std::map<Feeling, Perceptron*> prcps_f;
-#endif  
+#endif
 #ifdef QNN_DEBUG
   double relevance {0.0};
-#ifdef FEELINGS  
+#ifdef FEELINGS
   double relevance_f {0.0};
-#endif  
+#endif
 #endif
 #endif
 
   std::map<SPOTriplet, std::map<std::string, int>> frqs;
-#ifdef FEELINGS  
+#ifdef FEELINGS
   std::map<Feeling, std::map<std::string, int>> frqs_f;
 #endif
   SPOTriplet prev_action;
