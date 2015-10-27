@@ -450,7 +450,7 @@ private:
 
 #ifdef DISP_CURSES
 
-#ifndef COLOR_FEELINGS
+#ifndef PRINTING_CHARBYCHAR
       samu.disp.vi ( con.str() );
 #else      
       samu.disp.vi ( &console[0][0] );
