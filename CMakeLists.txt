@@ -86,6 +86,7 @@ add_definitions(-DCHARACTER_CONSOLE)
 add_definitions(-DQNN_DEBUG_BREL)
 add_definitions(-DQNN_DEBUG)
 #add_definitions(-DRND_DEBUG)
+#add_definitions(-DNN_DEBUG)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread -O3 -lm")
 

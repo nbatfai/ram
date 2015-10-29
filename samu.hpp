@@ -267,7 +267,7 @@ public:
 
   void scale_N_e ( void )
   {
-    vi.scalen(.65);
+    vi.scalen(.75);
   }
 
   void scale_N_e ( double s )

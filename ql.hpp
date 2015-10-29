@@ -570,7 +570,8 @@ public:
             prcps_f[prev_feeling]->learning ( prev_image, q_q_s_a_f, nn_q_s_a_f );
 #endif
 
-            std::cerr << "### "
+#ifdef NN_DEBUG
+	    std::cerr << "### "
                       << q_q_s_a - nn_q_s_a
                       << " "
                       << q_q_s_a
@@ -586,6 +587,8 @@ public:
                       << nn_q_s_a_f
                       << std::endl;
 #endif
+#endif
+		      
             if ( std::fabs ( old_q_q_s_a_nn_q_s_a - ( q_q_s_a - nn_q_s_a ) ) <= 0.0000000001 )
               break;
 
