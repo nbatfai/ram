@@ -48,26 +48,26 @@ cmake_minimum_required(VERSION 2.8.5)
 project(SAMU)
 
 ## remote
-# add_definitions(-DSUPER_OR_REMOTE_COMP)
-#
-# #set(CUDA_LAYERS ON)
-# set(CUDA_LAYERS OFF)
-#
-# #set(DISP_CURSES ON)
-# set(DISP_CURSES OFF)
+ add_definitions(-DSUPER_OR_REMOTE_COMP)
 
-# TUI
- #add_definitions(-DSUPER_OR_REMOTE_COMP)
- 
  #set(CUDA_LAYERS ON)
  set(CUDA_LAYERS OFF)
 
- set(DISP_CURSES ON)
- #set(DISP_CURSES OFF)
+ #set(DISP_CURSES ON)
+ set(DISP_CURSES OFF)
+
+# TUI
+# #add_definitions(-DSUPER_OR_REMOTE_COMP)
+# 
+# #set(CUDA_LAYERS ON)
+# set(CUDA_LAYERS OFF)
+#
+# set(DISP_CURSES ON)
+# #set(DISP_CURSES OFF)
 
 # Ram
-add_definitions(-DFEELINGS)
-add_definitions(-DPRINTING_CHARBYCHAR)
+#add_definitions(-DFEELINGS)
+#add_definitions(-DPRINTING_CHARBYCHAR)
 add_definitions(-DSARSA)
 
 # Hezron 
