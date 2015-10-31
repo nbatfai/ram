@@ -514,10 +514,10 @@ public:
     if ( prcps.find ( triplet ) == prcps.end() )
       {
 
-#ifndef CHARACTER_CONSOLE
-        prcps[triplet] = new Perceptron ( 3, 256*256, 80, 1 );
-        //prcps[triplet] = new Perceptron ( 3, 256*256, 400, 1 );
-#else
+#ifdef PLACE_VALUE
+        prcps[triplet] = new Perceptron ( 3, 10*3, 32,  1 ); //exp.a1 // 302
+	
+#elif CHARACTER_CONSOLE
         prcps[triplet] = new Perceptron ( 3, 10*80, 32,  1 ); //exp.a1 // 302
 
         //prcps[triplet] = new Perceptron ( 3, 10*80, 64,  1 ); //exp.a4
@@ -525,6 +525,9 @@ public:
         //prcps[triplet] = new Perceptron ( 5, 10*80, 256, 128, 32, 1 ); // 355
         //prcps[triplet] = new Perceptron ( 5, 10*80, 196, 32,  32, 1 ); // 302
         //prcps[triplet] = new Perceptron ( 5, 10*80, 400, 400,  32, 1 ); // 302
+#else
+        prcps[triplet] = new Perceptron ( 3, 256*256, 80, 1 );
+        //prcps[triplet] = new Perceptron ( 3, 256*256, 400, 1 );
 #endif
       }
 
@@ -608,10 +611,13 @@ public:
 #ifdef FEELINGS
     prev_feeling = feeling;	// a <- a'
 #endif
-#ifndef CHARACTER_CONSOLE
-    std::memcpy ( prev_image, image, 256*256*sizeof ( double ) );
-#else
+
+#ifdef PLACE_VALUE
+    std::memcpy ( prev_image, image, 10*3*sizeof ( double ) );
+#elif CHARACTER_CONSOLE
     std::memcpy ( prev_image, image, 10*80*sizeof ( double ) );
+#else
+    std::memcpy ( prev_image, image, 256*256*sizeof ( double ) );
 #endif
     return action;
   }

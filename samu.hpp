@@ -76,6 +76,9 @@
 #include "disp.hpp"
 #endif
 
+#include <cctype>
+#include <cmath>
+
 class Samu
 {
 public:
@@ -267,14 +270,14 @@ public:
 
   void scale_N_e ( void )
   {
-    vi.scalen(.75);
+    vi.scalen ( .75 );
   }
 
   void scale_N_e ( double s )
   {
-    vi.scalen(s);
+    vi.scalen ( s );
   }
-  
+
   int get_brel ( void )
   {
     return vi.brel();
@@ -303,6 +306,24 @@ private:
     ~VisualImagery()
     {}
 
+
+#ifdef PLACE_VALUE
+    double w2d ( std::string w )
+    {
+      double base = 'z'-'a';
+      double d{0.0};
+      int exp{1};
+      
+      for ( char& c : w )
+        {
+          char lc = std::tolower ( c );
+	  d += (lc-'a')*std::pow(base, exp++);
+        }
+      return d;
+    }
+#endif
+
+
     void operator<< ( std::vector<SPOTriplet> triplets )
     {
 
@@ -317,13 +338,13 @@ private:
           program.push ( triplet );
         }
 
-#ifdef FEELINGS        
+#ifdef FEELINGS
       if ( feelings.size() >= stmt_max )
         feelings.pop();
 
       feelings.push ( ql.feeling() );
 #endif
-      
+
       boost::posix_time::ptime now = boost::posix_time::second_clock::universal_time();
 
 #ifndef CHARACTER_CONSOLE
@@ -332,8 +353,8 @@ private:
       pngwriter image ( 256, 256, 65535, image_file_p );
       free ( image_file_p );
 #else
-      char console[10][80];
-      std::memset ( console, 0, 10*80 );
+      char console[nrows][ncols];
+      std::memset ( console, 0, nrows*ncols );
 #endif
 
       char stmt_buffer[1024];
@@ -343,7 +364,7 @@ private:
 #ifdef FEELINGS
       std::queue<Feeling> feels = feelings;
 #endif
-      
+
 #ifndef Q_LOOKUP_TABLE
 
       std::string prg;
@@ -351,6 +372,11 @@ private:
 #ifdef PYRAMID_VI
       SPOTriplets pyramid;
 #endif
+      
+#ifdef PLACE_VALUE      
+      double wbuf[nrows][3];
+#endif
+      
       while ( !run.empty() )
         {
           auto triplet = run.front();
@@ -359,6 +385,12 @@ private:
           prg += triplet.p.c_str();
           prg += triplet.o.c_str();
 
+#ifdef PLACE_VALUE	  
+	  wbuf[stmt_counter][0] = w2d(triplet.s);
+	  wbuf[stmt_counter][1] = w2d(triplet.p);
+	  wbuf[stmt_counter][2] = w2d(triplet.o);
+#endif
+	  
 #ifdef PYRAMID_VI
           pyramid.push_back ( triplet );
           SPOTriplets reverse_pyramid ( pyramid.size() );
@@ -371,13 +403,13 @@ private:
             cnt += std::snprintf ( stmt_buffer+cnt, 1024-cnt, "%s.%s(%s);", ( *it ).s.c_str(), ( *it ).p.c_str(), ( *it ).o.c_str() );
 #elif JUSTIFY_VI
           int cnt {0};
-          while ( cnt < 80 )
+          while ( cnt < mcols )
             cnt += std::snprintf ( stmt_buffer+cnt, 1024-cnt, "%s.%s(%s);", triplet.s.c_str(), triplet.p.c_str(), triplet.o.c_str() );
 #else
-	  
-#ifndef FEELINGS	  
+
+#ifndef FEELINGS
           std::snprintf ( stmt_buffer, 1024, "%s.%s(%s);", triplet.s.c_str(), triplet.p.c_str(), triplet.o.c_str() );
-#else	  
+#else
           if ( !feels.empty() )
             {
               auto s = feels.front();
@@ -386,7 +418,7 @@ private:
               std::string spo = ss.str();
               std::snprintf ( stmt_buffer, 1024, "%-30s %s", spo.c_str(), s.c_str() );
             }
-#endif            
+#endif
 #endif
 
 
@@ -407,34 +439,36 @@ private:
 #endif
 
           run.pop();
-#ifdef FEELINGS	  
+#ifdef FEELINGS
           feels.pop();
-#endif	  
+#endif
         }
 
-#ifndef CHARACTER_CONSOLE
-      double *img_input = new double[256*256];
+#ifdef PLACE_VALUE
 
-      for ( int i {0}; i<256; ++i )
-        for ( int j {0}; j<256; ++j )
+      double *img_input = new double[nrows*3];
+      for ( int i {0}; i<nrows; ++i )
+        for ( int j {0}; j<3; ++j )
           {
-            img_input[i*256+j] = image.dread ( i, j );
+            img_input[i*3+j] = wbuf[i][j];
           }
-#else
-      double *img_input = new double[10*80];
+
+#elif CHARACTER_CONSOLE
+
+      double *img_input = new double[nrows*ncols];
 
 #ifdef DISP_CURSES
       std::stringstream con;
 #endif
 
-      for ( int i {0}; i<10; ++i )
+      for ( int i {0}; i<nrows; ++i )
         {
 #ifdef DISP_CURSES
           std::string ci;
 #endif
-          for ( int j {0}; j<80; ++j )
+          for ( int j {0}; j<ncols; ++j )
             {
-              img_input[i*80+j] = ( ( double ) console[i][j] ) / 255.0;
+              img_input[i*ncols+j] = ( ( double ) console[i][j] ) / 255.0;
 #ifdef DISP_CURSES
               //if ( isgraph ( console[i][j] ) )
               if ( isprint ( console[i][j] ) )
@@ -452,12 +486,25 @@ private:
 
 #ifndef PRINTING_CHARBYCHAR
       samu.disp.vi ( con.str() );
-#else      
+#else
       samu.disp.vi ( &console[0][0] );
 #endif
 
 #endif
 
+
+
+
+#else
+
+double *img_input = new double[256*256];
+
+      for ( int i {0}; i<256; ++i )
+        for ( int j {0}; j<256; ++j )
+          {
+            img_input[i*256+j] = image.dread ( i, j );
+          }
+      
 #endif
 
 #else
@@ -566,7 +613,7 @@ private:
 
     void scalen ( double s )
     {
-      ql.scalen(s);
+      ql.scalen ( s );
     }
 
     int brel ( void )
@@ -586,12 +633,14 @@ private:
 
   private:
 
+    int nrows = 10;
+    int ncols = 80;
     Samu &samu;
     QL ql;
     std::queue<SPOTriplet> program;
 #ifdef FEELINGS
     std::queue<Feeling> feelings;
-#endif    
+#endif
     int stmt_counter {0};
     static const int stmt_max = 10;
 
@@ -623,3 +672,5 @@ private:
 };
 
 #endif
+
+
