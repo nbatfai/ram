@@ -515,7 +515,8 @@ public:
       {
 
 #ifdef PLACE_VALUE
-        prcps[triplet] = new Perceptron ( 3, 10*3, 32,  1 ); //exp.a1 // 302
+//        prcps[triplet] = new Perceptron ( 3, 10*3, 4,  1 ); //exp.a1 // 302
+        prcps[triplet] = new Perceptron ( 5, 10*3, 16, 8, 4,  1 ); //exp.a1 // 302
 	
 #elif CHARACTER_CONSOLE
         prcps[triplet] = new Perceptron ( 3, 10*80, 32,  1 ); //exp.a1 // 302

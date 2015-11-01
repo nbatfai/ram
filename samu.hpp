@@ -306,8 +306,7 @@ private:
     ~VisualImagery()
     {}
 
-
-#ifdef PLACE_VALUE
+//#ifdef PLACE_VALUE
     double w2d ( std::string w )
     {
       double base = 'z'-'a';
@@ -317,11 +316,11 @@ private:
       for ( char& c : w )
         {
           char lc = std::tolower ( c );
-	  d += (lc-'a')*std::pow(base, exp++);
+	  d += (lc-'a')*std::pow(base, -exp++);
         }
       return d;
     }
-#endif
+//#endif
 
 
     void operator<< ( std::vector<SPOTriplet> triplets )
@@ -386,6 +385,9 @@ private:
           prg += triplet.o.c_str();
 
 #ifdef PLACE_VALUE	  
+
+	   // std::cerr << "iter " << triplet.s << "iter " << triplet.p<< "iter " << triplet.o<< std::endl;
+
 	  wbuf[stmt_counter][0] = w2d(triplet.s);
 	  wbuf[stmt_counter][1] = w2d(triplet.p);
 	  wbuf[stmt_counter][2] = w2d(triplet.o);
@@ -408,7 +410,14 @@ private:
 #else
 
 #ifndef FEELINGS
-          std::snprintf ( stmt_buffer, 1024, "%s.%s(%s);", triplet.s.c_str(), triplet.p.c_str(), triplet.o.c_str() );
+#ifdef DRAW_WNUM
+          std::snprintf ( stmt_buffer, 1024, "%s.%s(%s); %f.%f(%f)", 
+			  triplet.s.c_str(), triplet.p.c_str(), triplet.o.c_str(),
+			  w2d(triplet.s), w2d(triplet.p), w2d(triplet.o));
+#else
+          std::snprintf ( stmt_buffer, 1024, "%s.%s(%s);", triplet.s.c_str(), triplet.p.c_str(), triplet.o.c_str() );	  
+#endif	  
+	  
 #else
           if ( !feels.empty() )
             {
@@ -448,11 +457,15 @@ private:
 
       double *img_input = new double[nrows*3];
       for ( int i {0}; i<nrows; ++i )
+      {
         for ( int j {0}; j<3; ++j )
           {
             img_input[i*3+j] = wbuf[i][j];
+	    //std::cerr << "iter " << img_input[i*3+j] << " | ";
+	    
           }
-
+	    //std::cerr << "iter " << std::endl;
+      }
 #elif CHARACTER_CONSOLE
 
       double *img_input = new double[nrows*ncols];
@@ -491,9 +504,6 @@ private:
 #endif
 
 #endif
-
-
-
 
 #else
 
