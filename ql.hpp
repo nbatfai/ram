@@ -320,7 +320,7 @@ typedef std::string Feeling;
 class QL
 {
 public:
-  QL ( )
+  QL (int nrows)
   {
 #ifdef FEELINGS
     std::random_device init;
@@ -329,10 +329,10 @@ public:
     //std::uniform_int_distribution<int> dist ( 0, 6 );
     std::uniform_int_distribution<int> dist ( 0, 9 );
     //std::uniform_int_distribution<int> dist (48, 126 );
-    for ( int i {0}; i<10; ++i )
+    for ( int i {0}; i<nrows; ++i )
       {
         std::stringstream ss;
-        for ( int j {0}; j<40; ++j )
+        for ( int j {0}; j<10; ++j )
           {
             //char c = dist ( gen );
             //ss << c;
@@ -352,6 +352,11 @@ public:
     for ( std::map<SPOTriplet, Perceptron*>::iterator it=prcps.begin(); it!=prcps.end(); ++it )
       delete it->second;
 #endif
+#ifdef FEELINGS
+    for ( std::map<Feeling, Perceptron*>::iterator it=prcps_f.begin(); it!=prcps_f.end(); ++it )
+      delete it->second;
+#endif
+    
   }
 
   double f ( double u, int n )

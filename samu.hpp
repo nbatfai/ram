@@ -423,7 +423,12 @@ private:
             {
               auto s = feels.front();
               std::stringstream ss;
+#ifndef FEELINGS	      
               ss << triplet.s << "." << triplet.p << "(" << triplet.o << ");";
+#else
+              ss << triplet.s << "." << triplet.p << "(" << triplet.o << "); "
+	      << w2d(triplet.s) << "." << w2d(triplet.p) << "(" << w2d(triplet.o) << "); ";
+#endif	      
               std::string spo = ss.str();
               std::snprintf ( stmt_buffer, 1024, "%-30s %s", spo.c_str(), s.c_str() );
             }
@@ -646,7 +651,7 @@ double *img_input = new double[256*256];
     int nrows = 10;
     int ncols = 80;
     Samu &samu;
-    QL ql;
+    QL ql{nrows};
     std::queue<SPOTriplet> program;
 #ifdef FEELINGS
     std::queue<Feeling> feelings;
