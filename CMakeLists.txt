@@ -66,10 +66,11 @@ project(SAMU)
  #set(DISP_CURSES OFF)
 
 # Ram
-add_definitions(-DDRAW_WNUM)
+add_definitions(-DFOUR_TIMES)
+#add_definitions(-DDRAW_WNUM)
 #add_definitions(-DPLACE_VALUE)
-add_definitions(-DFEELINGS)
-add_definitions(-DPRINTING_CHARBYCHAR)
+#add_definitions(-DFEELINGS)
+#add_definitions(-DPRINTING_CHARBYCHAR)
 #add_definitions(-DSARSA)
 
 # Hezron 

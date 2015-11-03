@@ -521,7 +521,10 @@ public:
 
 #ifdef PLACE_VALUE
 //        prcps[triplet] = new Perceptron ( 3, 10*3, 4,  1 ); //exp.a1 // 302
-        prcps[triplet] = new Perceptron ( 5, 10*3, 16, 8, 4,  1 ); //exp.a1 // 302
+        prcps[triplet] = new Perceptron ( 5, 10*3, 16, 8, 4,  1 );
+
+#elif FOUR_TIMES	      
+        prcps[triplet] = new Perceptron ( 3, 2*10*2*80, 32,  1 ); 
 	
 #elif CHARACTER_CONSOLE
         prcps[triplet] = new Perceptron ( 3, 10*80, 32,  1 ); //exp.a1 // 302
@@ -620,6 +623,8 @@ public:
 
 #ifdef PLACE_VALUE
     std::memcpy ( prev_image, image, 10*3*sizeof ( double ) );
+#elif FOUR_TIMES
+    std::memcpy ( prev_image, image, 2*10*2*80*sizeof ( double ) );
 #elif CHARACTER_CONSOLE
     std::memcpy ( prev_image, image, 10*80*sizeof ( double ) );
 #else
@@ -953,10 +958,14 @@ private:
   double max_reward { 1.1 };
   double min_reward {-1.1*max_reward};
 
-#ifndef CHARACTER_CONSOLE
-  double prev_image [256*256];
-#else
+#ifdef PLACE_VALUE
+  double prev_image [10*3];
+#elif FOUR_TIMES
+  double prev_image [2*10*2*80];
+#elif CHARACTER_CONSOLE
   double prev_image [10*80];
+#else
+  double prev_image [256*256];
 #endif
 
 };

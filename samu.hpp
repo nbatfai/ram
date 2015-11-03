@@ -473,8 +473,12 @@ private:
       }
 #elif CHARACTER_CONSOLE
 
+#ifdef FOUR_TIMES	      
+      double *img_input = new double[2*nrows*2*ncols];
+#else
       double *img_input = new double[nrows*ncols];
-
+#endif
+      
 #ifdef DISP_CURSES
       std::stringstream con;
 #endif
@@ -486,7 +490,15 @@ private:
 #endif
           for ( int j {0}; j<ncols; ++j )
             {
-              img_input[i*ncols+j] = ( ( double ) console[i][j] ) / 255.0;
+#ifdef FOUR_TIMES	      
+              img_input[2*i*ncols+2*j] = ( ( double ) console[i][j] ) / 255.0;
+              img_input[2*i*ncols+2*j+1] = ( ( double ) console[i][j] ) / 255.0;
+              img_input[2*(i+1)*ncols+2*j] = ( ( double ) console[i][j] ) / 255.0;
+              img_input[2*(i+1)*ncols+2*j+1] = ( ( double ) console[i][j] ) / 255.0;
+#else
+              img_input[i*ncols+j] = ( ( double ) console[i][j] ) / 255.0;	      
+#endif	      
+	      
 #ifdef DISP_CURSES
               //if ( isgraph ( console[i][j] ) )
               if ( isprint ( console[i][j] ) )
