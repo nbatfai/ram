@@ -310,13 +310,13 @@ private:
     double w2d ( std::string w )
     {
       double base = 'z'-'a';
-      double d{0.0};
-      int exp{1};
-      
+      double d {0.0};
+      int exp {1};
+
       for ( char& c : w )
         {
           char lc = std::tolower ( c );
-	  d += (lc-'a')*std::pow(base, -exp++);
+          d += ( lc-'a' ) *std::pow ( base, -exp++ );
         }
       return d;
     }
@@ -371,11 +371,11 @@ private:
 #ifdef PYRAMID_VI
       SPOTriplets pyramid;
 #endif
-      
-#ifdef PLACE_VALUE      
+
+#ifdef PLACE_VALUE
       double wbuf[nrows][3];
 #endif
-      
+
       while ( !run.empty() )
         {
           auto triplet = run.front();
@@ -384,15 +384,15 @@ private:
           prg += triplet.p.c_str();
           prg += triplet.o.c_str();
 
-#ifdef PLACE_VALUE	  
+#ifdef PLACE_VALUE
 
-	   // std::cerr << "iter " << triplet.s << "iter " << triplet.p<< "iter " << triplet.o<< std::endl;
+          // std::cerr << "iter " << triplet.s << "iter " << triplet.p<< "iter " << triplet.o<< std::endl;
 
-	  wbuf[stmt_counter][0] = w2d(triplet.s);
-	  wbuf[stmt_counter][1] = w2d(triplet.p);
-	  wbuf[stmt_counter][2] = w2d(triplet.o);
+          wbuf[stmt_counter][0] = w2d ( triplet.s );
+          wbuf[stmt_counter][1] = w2d ( triplet.p );
+          wbuf[stmt_counter][2] = w2d ( triplet.o );
 #endif
-	  
+
 #ifdef PYRAMID_VI
           pyramid.push_back ( triplet );
           SPOTriplets reverse_pyramid ( pyramid.size() );
@@ -411,24 +411,24 @@ private:
 
 #ifndef FEELINGS
 #ifdef DRAW_WNUM
-          std::snprintf ( stmt_buffer, 1024, "%s.%s(%s); %f.%f(%f)", 
-			  triplet.s.c_str(), triplet.p.c_str(), triplet.o.c_str(),
-			  w2d(triplet.s), w2d(triplet.p), w2d(triplet.o));
+          std::snprintf ( stmt_buffer, 1024, "%s.%s(%s); %f.%f(%f)",
+                          triplet.s.c_str(), triplet.p.c_str(), triplet.o.c_str(),
+                          w2d ( triplet.s ), w2d ( triplet.p ), w2d ( triplet.o ) );
 #else
-          std::snprintf ( stmt_buffer, 1024, "%s.%s(%s);", triplet.s.c_str(), triplet.p.c_str(), triplet.o.c_str() );	  
-#endif	  
-	  
+          std::snprintf ( stmt_buffer, 1024, "%s.%s(%s);", triplet.s.c_str(), triplet.p.c_str(), triplet.o.c_str() );
+#endif
+
 #else
           if ( !feels.empty() )
             {
               auto s = feels.front();
               std::stringstream ss;
-#ifndef FEELINGS	      
+#ifndef FEELINGS
               ss << triplet.s << "." << triplet.p << "(" << triplet.o << ");";
 #else
               ss << triplet.s << "." << triplet.p << "(" << triplet.o << "); "
-	      << w2d(triplet.s) << "." << w2d(triplet.p) << "(" << w2d(triplet.o) << "); ";
-#endif	      
+                 << w2d ( triplet.s ) << "." << w2d ( triplet.p ) << "(" << w2d ( triplet.o ) << "); ";
+#endif
               std::string spo = ss.str();
               std::snprintf ( stmt_buffer, 1024, "%-30s %s", spo.c_str(), s.c_str() );
             }
@@ -458,27 +458,40 @@ private:
 #endif
         }
 
+
+#ifdef CELL_AUTOMATA
+      char console2[nrows][ncols];
+      for ( int i {1}; i<nrows-1; ++i )
+        for ( int j {1}; j<ncols-1; ++j )
+          console2[i][j] = console[i-1][j]+console[i][j-1]+console[i+1][j]+console[i][j+1];
+
+
+      for ( int i {1}; i<nrows-1; ++i )
+        for ( int j {1}; j<ncols-1; ++j )
+          console[i][j] = console2[i][j];
+#endif
+
 #ifdef PLACE_VALUE
 
       double *img_input = new double[nrows*3];
       for ( int i {0}; i<nrows; ++i )
-      {
-        for ( int j {0}; j<3; ++j )
-          {
-            img_input[i*3+j] = wbuf[i][j];
-	    //std::cerr << "iter " << img_input[i*3+j] << " | ";
-	    
-          }
-	    //std::cerr << "iter " << std::endl;
-      }
+        {
+          for ( int j {0}; j<3; ++j )
+            {
+              img_input[i*3+j] = wbuf[i][j];
+              //std::cerr << "iter " << img_input[i*3+j] << " | ";
+
+            }
+          //std::cerr << "iter " << std::endl;
+        }
 #elif CHARACTER_CONSOLE
 
-#ifdef FOUR_TIMES	      
+#ifdef FOUR_TIMES
       double *img_input = new double[2*nrows*2*ncols];
 #else
       double *img_input = new double[nrows*ncols];
 #endif
-      
+
 #ifdef DISP_CURSES
       std::stringstream con;
 #endif
@@ -490,15 +503,15 @@ private:
 #endif
           for ( int j {0}; j<ncols; ++j )
             {
-#ifdef FOUR_TIMES	      
+#ifdef FOUR_TIMES
               img_input[2*i*ncols+2*j] = ( ( double ) console[i][j] ) / 255.0;
               img_input[2*i*ncols+2*j+1] = ( ( double ) console[i][j] ) / 255.0;
-              img_input[2*(i+1)*ncols+2*j] = ( ( double ) console[i][j] ) / 255.0;
-              img_input[2*(i+1)*ncols+2*j+1] = ( ( double ) console[i][j] ) / 255.0;
+              img_input[2* ( i+1 ) *ncols+2*j] = ( ( double ) console[i][j] ) / 255.0;
+              img_input[2* ( i+1 ) *ncols+2*j+1] = ( ( double ) console[i][j] ) / 255.0;
 #else
-              img_input[i*ncols+j] = ( ( double ) console[i][j] ) / 255.0;	      
-#endif	      
-	      
+              img_input[i*ncols+j] = ( ( double ) console[i][j] ) / 255.0;
+#endif
+
 #ifdef DISP_CURSES
               //if ( isgraph ( console[i][j] ) )
               if ( isprint ( console[i][j] ) )
@@ -524,14 +537,14 @@ private:
 
 #else
 
-double *img_input = new double[256*256];
+      double *img_input = new double[256*256];
 
       for ( int i {0}; i<256; ++i )
         for ( int j {0}; j<256; ++j )
           {
             img_input[i*256+j] = image.dread ( i, j );
           }
-      
+
 #endif
 
 #else
@@ -663,7 +676,7 @@ double *img_input = new double[256*256];
     int nrows = 10;
     int ncols = 80;
     Samu &samu;
-    QL ql{nrows};
+    QL ql {nrows};
     std::queue<SPOTriplet> program;
 #ifdef FEELINGS
     std::queue<Feeling> feelings;
