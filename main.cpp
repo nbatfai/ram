@@ -414,47 +414,47 @@ int main ( int argc, char **argv )
             ++mbrelc;
           else
             mbrelc = 0;
-/*
-          if ( fabs ( prev_mbrel - mbrel ) < .2 )
-            ++mbrelc2;
-          else
-            mbrelc2 = 0;
-*/
-/*
-          if ( bad <= 3 )
-            {
+          /*
+                    if ( fabs ( prev_mbrel - mbrel ) < .2 )
+                      ++mbrelc2;
+                    else
+                      mbrelc2 = 0;
+          */
+          /*
+                    if ( bad <= 3 )
+                      {
 
-              if ( ++reinforcement == 20 )
-                {
-                  samuHasAlreadyLearned += 7;
-                  reinforcement = 0;
-                }
-            }
-          else if ( mbrelc2 >= 2*samuHasAlreadyLearned )
-            {
+                        if ( ++reinforcement == 20 )
+                          {
+                            samuHasAlreadyLearned += 7;
+                            reinforcement = 0;
+                          }
+                      }
+                    else if ( mbrelc2 >= 2*samuHasAlreadyLearned )
+                      {
 
-              if ( N_e < samuHasAlreadyLearned )
-                N_e +=1;
-              samu.scale_N_e ( .75 );
-              mbrelc2 = 0;
-              std::cerr << "(mbrelc2) iter, N structure rescaled " << std::endl;
+                        if ( N_e < samuHasAlreadyLearned )
+                          N_e +=1;
+                        samu.scale_N_e ( .75 );
+                        mbrelc2 = 0;
+                        std::cerr << "(mbrelc2) iter, N structure rescaled " << std::endl;
 
-            }
-          else if ( mbrelc > 2*samuHasAlreadyLearned && bad > 3 )
-            {
+                      }
+                    else if ( mbrelc > 2*samuHasAlreadyLearned && bad > 3 )
+                      {
 
-              if ( N_e >samuHasAlreadyLearned )
-                N_e -=1;
+                        if ( N_e >samuHasAlreadyLearned )
+                          N_e -=1;
 
-              samu.scale_N_e ( .82 );
-              //N_e += 5;
-              mbrelc = 0;
-              std::cerr << " iter, N structure rescaled " << std::endl;
+                        samu.scale_N_e ( .82 );
+                        //N_e += 5;
+                        mbrelc = 0;
+                        std::cerr << " iter, N structure rescaled " << std::endl;
 
-              //} else if(!bad)
-              //} else if(bad <cnt/10)
-            }
-*/
+                        //} else if(!bad)
+                        //} else if(bad <cnt/10)
+                      }
+          */
 
           if ( /*mbrel > 35.0 &&*/ mbrelc > 20 && bad >=2 )
             {
@@ -463,16 +463,16 @@ int main ( int argc, char **argv )
               mbrelc = 0;
               std::cerr << " iter, N structure rescaled " << std::endl;
 
-            //} else if(!bad)
-           } 
-         else if(bad <2)
-          {             
-              if(++reinforcement == 10)
-              {
-                 samuHasAlreadyLearned += 7;
-                 reinforcement = 0;
-              }
-          }
+              //} else if(!bad)
+            }
+          else if ( bad <2 )
+            {
+              if ( ++reinforcement == 10 )
+                {
+                  samuHasAlreadyLearned += 7;
+                  reinforcement = 0;
+                }
+            }
 
 
           //if ( /*mbrel > 35.0 &&*/ mbrelc > 50 && cnt-bad <= cnt- ( cnt/10 ) )
