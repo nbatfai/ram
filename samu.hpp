@@ -141,7 +141,9 @@ public:
 
         SPOTriplets tv = nlp.sentence2triplets ( sentence.c_str() );
 
+#ifndef INCREMENTAL_CACHE	
         vi << tv;
+#endif	
 
         if ( tv.size() )
           {

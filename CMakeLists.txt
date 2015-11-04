@@ -66,6 +66,7 @@ project(SAMU)
  #set(DISP_CURSES OFF)
 
 # Ram
+add_definitions(-DINCREMENTAL_CACHE)
 add_definitions(-DCELL_AUTOMATA)
 #add_definitions(-DFOUR_TIMES)
 #add_definitions(-DDRAW_WNUM)
