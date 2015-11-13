@@ -5,7 +5,8 @@ See also the page [Family Robotics - Deep Q-learning with Samu](http://shrek.uni
 ## Genealogy of Ram
 
 1. [Samu](https://github.com/nbatfai/samu)
-The main purpose of this project is to allow the evaluation and verification of the results of the paper entitled **"A disembodied developmental robotic agent called Samu Bátfai"**. It is our hope that Samu will be the ancestor of developmental robotics chatter bots that will be able to chat in natural language like humans do.
+The main purpose of this project is to allow the evaluation and verification of the results of the paper entitled 
+**"A disembodied developmental robotic agent called Samu Bátfai"**, [http://arxiv.org/abs/1511.02889](http://arxiv.org/abs/1511.02889). It is our hope that Samu will be the ancestor of developmental robotics chatter bots that will be able to chat in natural language like humans do.
 2. [Isaac](https://github.com/nbatfai/isaac)
 *"The son of Samu is Isaac."* The project called Isaac is a case study of using deep Q learning with neural networks for predicting the next sentence of a conversation.
 3. [Jacob](https://github.com/nbatfai/jacob)
@@ -81,7 +82,7 @@ See the project's wiki page for further information.
 
 # Samu
 One of the purpose of the original Samu project was only to allow the evaluation and verification of the results of the paper entitled 
-**"A disembodied developmental robotic agent called Samu Bátfai"**. 
+**"A disembodied developmental robotic agent called Samu Bátfai"**, [http://arxiv.org/abs/1511.02889](http://arxiv.org/abs/1511.02889). 
 This paper presents Q learning with neural networks approximators used by Samu. It is our hope and goal that Samu 
 will be the ancestor of developmental robotics chatter bots that will be able to talk and read in natural language like humans do.
 At this moment Samu is the generic name of rapid prototypes that facilitate achieving this goal.
